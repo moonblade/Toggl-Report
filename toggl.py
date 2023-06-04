@@ -1,6 +1,7 @@
 import requests
 import base64
 import json
+import settings
 
 class Toggl():
     def __init__(self, apiKey):
@@ -19,7 +20,7 @@ class Toggl():
     def getWorkspaces(self):
         response = requests.get(self.baseUrl + '/v9/workspaces', headers=self.headers)
         for workspace in response.json():
-            if workspace["name"] == "Mnishamk1995's workspace":
+            if workspace["name"] == settings.workspacename:
                 self.workspaceId = workspace["id"]
                 return
     
