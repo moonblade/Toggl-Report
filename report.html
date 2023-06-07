@@ -77,6 +77,7 @@
 
     </style>
     <script type="module">
+      var reportData = {};
       const displayReport = (report) => {
         const clientName = Object.keys(report)[0];
         report = report[clientName];
@@ -102,15 +103,13 @@
         });
         $('#invoice-items').html(invoiceHTML);
 
-        window.fileName = `${report.displayName} - ${report.startDate} to ${report.endDate}.pdf`
+        window.fileName = `${report.displayName} - ${report.startDate} to ${report.endDate}`
 
         console.log(report);
       };
 
       $(document).ready(function() {
-        $.getJSON('report.json', function(report) {
-          displayReport(report);
-        })
+        displayReport(reportData);
       });
     </script>
   </head>
