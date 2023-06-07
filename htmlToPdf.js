@@ -7,11 +7,13 @@ async function convertHtmlToPdf(inputHtmlFile, outputPdfFile) {
   const page = await browser.newPage();
 
   // Read the report.json file
-  const reportData = fs.readFileSync('report.json', 'utf-8');
+  const jsonFile = path.join(__dirname, 'report.json');
+  const inputFile = path.join(__dirname, inputHtmlFile);
+  const reportData = fs.readFileSync(jsonFile, 'utf-8');
   const jsonData = JSON.parse(reportData);
 
   // Read the HTML template file
-  const htmlContent = fs.readFileSync(inputHtmlFile, 'utf-8');
+  const htmlContent = fs.readFileSync(inputFile, 'utf-8');
 
   // Inject the report data into the HTML template
   const injectedHtmlContent = htmlContent.replace(

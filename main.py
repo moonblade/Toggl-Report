@@ -1,16 +1,14 @@
 from toggl import Toggl
 import settings
 import subprocess
+import os
 
-def convertToPdf(inputHtmlFile):
-    # Execute the Node.js script using subprocess
-    try:
-        subprocess.run(['node', 'htmlToPdf.js', inputHtmlFile], check=True)
-        print("PDF conversion completed!")
-    except subprocess.CalledProcessError as e:
-        print("PDF conversion failed:", e)
+def convertToPdf(html_file):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(script_dir, 'htmlToPdf.js')
+    command = ['node', script_path, html_file]
+    subprocess.run(command, check=True)
 
-inputHtmlFile = 'report.html'
 def main():
     t = Toggl(settings.apiKey)
     convertToPdf("report.html")
