@@ -73,7 +73,8 @@ class Toggl():
                 "amount": totalAmount,
                 "currency": client["currency"],
                 "clientName": client["clientName"],
-                "ratePerHour": client["ratePerHour"]
+                "ratePerHour": client["ratePerHour"],
+                "displayName": client["displayName"]
             }
 
     def makeReportJson(self):
