@@ -33,8 +33,17 @@
     <style>
       .container {
         width: 100%;
+        max-width: 100%;
         margin-left: 0;
         margin-right: 0;
+      }
+
+      .title {
+        margin-left: 0px;
+      }
+
+      .subtitle {
+        font-size: 2.5rem;
       }
     </style>
     <script type="module">
@@ -57,23 +66,23 @@
     </script>
   </head>
   <body class="m-4">
-    <div class="row">
-    <h2>Invoice<small class="text-muted" id="clientName"></small></h2><h2><small id="dates" class="text-right text-muted"></h2>
+    <div class="row title">
+    <h2>Invoice - <small class="text-muted" id="clientName"></small></h2><h2><small id="dates" class="text-right text-muted"></h2>
     </div>
     <hr/>
     <div class="container">
     <div class="row">
       <div class="col-sm text-uppercase">
         <div class="row"><h5 class="text-muted"><small>Total Hours</small></h5></div>
-        <div class="row"><h2 class="" id="totalHours"></h2></div>
+        <div class="row"><h2 class="subtitle" id="totalHours"></h2></div>
       </div>
       <div class="col-sm mx-auto text-uppercase">
         <div class="row"><h5 class="text-muted"><small>Billable Hours</small></h5></div>
-        <div class="row"><h2 class="" id="billableHours"></h2></div>
+        <div class="row"><h2 class="subtitle" id="billableHours"></h2></div>
       </div>
       <div class="col-sm mx-auto text-uppercase">
         <div class="row"><h5 class="text-muted"><small>Amount</small></h5></div>
-        <div class="row"><h2 class="" id="amount"></h2></div>
+        <div class="row"><h2 class="subtitle" id="amount"></h2></div>
       </div>
       </div>
     </div>
