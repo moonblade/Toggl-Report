@@ -45,16 +45,66 @@
       .subtitle {
         font-size: 2.5rem;
       }
+
+      .invoice-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .invoice-header h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2.5rem;
+      }
+
+      .invoice-table th {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        font-weight: bold;
+        text-align: left;
+        text-transform: uppercase;
+        border-bottom: 2px solid #ddd;
+      }
+
+      .invoice-table td {
+        text-align: left;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+      }
+
     </style>
     <script type="module">
       const displayReport = (report) => {
         const clientName = Object.keys(report)[0];
-        $("#clientName").html(` ${clientName}`);
         report = report[clientName];
-        $("#dates").html(` - (${report.startDate} - ${report.endDate})`);
+        $("#clientName").html(` ${report.displayName}`);
+        $("#dates").html(`${report.startDate} to ${report.endDate}`);
         $("#totalHours").html(`${report.totalHours}`);
         $("#billableHours").html(`${report.billableHours}`);
         $("#amount").html(`${report.currency} ${report.amount}`);
+
+
+        const timeEntries = report.timeEntries;
+        let invoiceHTML = '';
+        timeEntries.forEach(entry => {
+          const { "Start date": startDate, Project, Description, Duration, Amount } = entry;
+          const cleanedDescription = Description.replace(':ignore:', '');
+          invoiceHTML += `<tr>
+            <td>${startDate}</td>
+            <td>${Project}</td>
+            <td>${cleanedDescription}</td>
+            <td>${Duration}</td>
+            <td>${report.currency} ${Amount}</td>
+          </tr>`;
+        });
+        $('#invoice-items').html(invoiceHTML);
+
         console.log(report);
       };
 
@@ -66,10 +116,10 @@
     </script>
   </head>
   <body class="m-4">
-    <div class="row title">
-    <h2>Invoice - <small class="text-muted" id="clientName"></small></h2><h2><small id="dates" class="text-right text-muted"></h2>
-    </div>
+    <div class="text-center">
+    <h2>Invoice for <span class="" id="clientName"></span></h2><h2><small id="dates" class="text-right text-muted"></h2>
     <hr/>
+    </div>
     <div class="container">
     <div class="row">
       <div class="col-sm text-uppercase">
@@ -86,5 +136,20 @@
       </div>
       </div>
     </div>
+    <hr/>
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Project</th>
+          <th>Description</th>
+          <th>Duration</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody id="invoice-items">
+      </tbody>
+    </table>
+
   </body>
 </html>
