@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 
-async function convertHtmlToPdf(inputHtmlFile, outputPdfFile) {
+async function convertHtmlToPdf(inputHtmlFile, outputPdfFile, index) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -18,7 +18,8 @@ async function convertHtmlToPdf(inputHtmlFile, outputPdfFile) {
   // Inject the report data into the HTML template
   const injectedHtmlContent = htmlContent.replace(
     'var reportData = {};',
-    `var reportData = ${JSON.stringify(jsonData)};`
+    `var reportData = ${JSON.stringify(jsonData)};
+     index=${index}`
   );
 
   await page.setContent(injectedHtmlContent, { waitUntil: 'networkidle0' });
@@ -39,6 +40,7 @@ async function convertHtmlToPdf(inputHtmlFile, outputPdfFile) {
 
 // Extract input file path from command-line argument
 const inputHtmlFile = process.argv[2];
+const index = parseInt(process.argv[3]);
 
 // Check if input file path is provided
 if (!inputHtmlFile) {
@@ -49,5 +51,5 @@ if (!inputHtmlFile) {
 
 const outputDirectory = path.join(process.env.HOME, 'Downloads');
 
-convertHtmlToPdf(inputHtmlFile, outputDirectory);
+convertHtmlToPdf(inputHtmlFile, outputDirectory, index);
 
