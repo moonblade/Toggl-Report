@@ -77,9 +77,10 @@
 
     </style>
     <script type="module">
+      let index = 0;
       var reportData = {};
       const displayReport = (report) => {
-        const clientName = Object.keys(report)[0];
+        const clientName = Object.keys(report)[index];
         report = report[clientName];
         $("#clientName").html(` ${report.displayName}`);
         $("#dates").html(`${report.startDate} to ${report.endDate}`);
@@ -98,10 +99,14 @@
             <td>${cleanedDescription}</td>
             <td>${startDate}</td>
             <td>${Duration}</td>
-            <td>${report.currency} ${Amount}</td>
+            <td class="amount">${report.currency} ${Amount}</td>
           </tr>`;
         });
         $('#invoice-items').html(invoiceHTML);
+
+        if (report.ratePerHour == 0) {
+          $(".amount").hide();
+        }
 
         window.fileName = `${report.displayName} - ${report.startDate} to ${report.endDate}`
 
@@ -128,7 +133,7 @@
         <div class="row"><h5 class="text-muted"><small>Billable Hours</small></h5></div>
         <div class="row"><h2 class="subtitle" id="billableHours"></h2></div>
       </div>
-      <div class="col-sm mx-auto text-uppercase">
+      <div class="col-sm mx-auto text-uppercase amount">
         <div class="row"><h5 class="text-muted"><small>Amount</small></h5></div>
         <div class="row"><h2 class="subtitle" id="amount"></h2></div>
       </div>
@@ -142,7 +147,7 @@
           <th>Description</th>
           <th>Date</th>
           <th>Duration</th>
-          <th>Amount</th>
+          <th class="amount">Amount</th>
         </tr>
       </thead>
       <tbody id="invoice-items">
