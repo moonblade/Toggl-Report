@@ -92,14 +92,15 @@
         const timeEntries = report.timeEntries;
         let invoiceHTML = '';
         timeEntries.forEach(entry => {
-          const { "Start date": startDate, Project, Description, Duration, Amount } = entry;
+          const { "Start date": startDate, Project, Description, Duration, amount, ratePerHour } = entry;
           const cleanedDescription = Description.replace(':ignore:', '');
           invoiceHTML += `<tr>
             <td>${Project}</td>
             <td>${cleanedDescription}</td>
             <td>${startDate}</td>
             <td>${Duration}</td>
-            <td class="amount">${report.currency} ${Amount}</td>
+            <td>${report.currency} ${ratePerHour}</td>
+            <td class="amount">${report.currency} ${amount}</td>
           </tr>`;
         });
         $('#invoice-items').html(invoiceHTML);
@@ -147,6 +148,7 @@
           <th>Description</th>
           <th>Date</th>
           <th>Duration</th>
+          <th>Rate</th>
           <th class="amount">Amount</th>
         </tr>
       </thead>

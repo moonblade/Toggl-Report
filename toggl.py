@@ -56,8 +56,16 @@ class Toggl():
                 row["billable"] = ":ignore:" not in row["Description"]
                 duration = [int(x) for x in row["Duration"].split(":")]
                 delta = timedelta(hours=duration[0], minutes=duration[1], seconds=duration[2])
-                amount = round(delta.total_seconds() * int(client["ratePerHour"]) / 3600, 2)
+                project=row["Project"].lower()
+                ratePerHour = int(client["ratePerHour"])
+                if "projects" in client:
+                    for clientProject in client["projects"]:
+                        if clientProject["name"] in project or project in clientProject["name"]:
+                            if "ratePerHour" in clientProject:
+                                ratePerHour = int(clientProject["ratePerHour"])
+                amount = round(delta.total_seconds() * ratePerHour / 3600, 2)
                 row["amount"] = amount if row["billable"] else 0
+                row["ratePerHour"] = ratePerHour
                 totalHours += delta
                 if row["billable"]:
                     billableHours += delta
@@ -82,4 +90,6 @@ class Toggl():
             json.dump(self.timeEntries, f, default=str)
 
 
-
+if __name__ == "__main__":
+    t = Toggl(settings.apiKey)
+    print(json.dumps(t.timeEntries))
