@@ -24,6 +24,17 @@ class Toggl():
         self.getReportsForClients()
         self.makeReportJson()
 
+    def convert_to_inr(self, amount, currency):
+        response = requests.get(f"https://api.exchangerate-api.com/v4/latest/INR")
+        data = response.json()
+        if response.status_code == 200 and 'rates' in data:
+            rates = data['rates']
+            if currency in rates:
+                conversion_rate = rates[currency]
+                inr_amount = amount / conversion_rate
+                return inr_amount
+        return 0
+
     def getWorkspaces(self):
         response = requests.get(self.baseUrl + '/v9/workspaces', headers=self.headers)
         for workspace in response.json():
@@ -78,7 +89,8 @@ class Toggl():
                 "endDate": settings.endDate,
                 "totalHours": totalHours,
                 "billableHours": billableHours,
-                "amount": totalAmount,
+                "amount": round(totalAmount, 2),
+                "amountInr": round(self.convert_to_inr(totalAmount, client["currencyCode"])),
                 "currency": client["currency"],
                 "clientName": client["clientName"],
                 "ratePerHour": client["ratePerHour"],

@@ -87,6 +87,7 @@
         $("#totalHours").html(`${report.totalHours}`);
         $("#billableHours").html(`${report.billableHours}`);
         $("#amount").html(`${report.currency} ${report.amount}`);
+        $("#inrAmount").html(`₹ ${report.amountInr}`);
 
 
         const timeEntries = report.timeEntries;
@@ -137,6 +138,10 @@
       <div class="col-sm mx-auto text-uppercase amount">
         <div class="row"><h5 class="text-muted"><small>Amount</small></h5></div>
         <div class="row"><h2 class="subtitle" id="amount"></h2></div>
+      </div>
+      <div class="col-sm mx-auto text-uppercase amount">
+        <div class="row"><h5 class="text-muted"><small>INR Amount</small></h5></div>
+        <div class="row"><h2 class="subtitle" id="inrAmount"></h2></div>
       </div>
       </div>
     </div>
