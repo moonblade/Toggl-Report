@@ -5,10 +5,17 @@ import settings
 import csv
 from datetime import timedelta
 from pprint import pprint
+import argparse
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Toggle')
+    parser.add_argument('-p', '--previous_month', action='store_true', help='Use the previous month')
+    return parser.parse_args()
 
 class Toggl():
     def __init__(self, apiKey):
         self.apiKey = apiKey
+        self.args = parse_args()
         self.setup()
 
     def setup(self):
@@ -50,12 +57,15 @@ class Toggl():
 
     def getReportsForClients(self):
         for client in settings.clients:
+            startDate = settings.startDate
+            if self.args.previous_month:
+                startDate = settings.startDatePreviousMonth
             data = {
                 "client_ids":[self.clients[client["clientName"]]],
                 "duration_format":"classic",
                 "end_date":settings.endDate,
                 "hour_format":"string",
-                "start_date":settings.startDate,
+                "start_date":startDate,
             }
             response = requests.post(self.reportsBaseUrl + '/v3/workspace/'+str(self.workspaceId)+'/search/time_entries.csv', json=data, headers=self.headers)
             reader = csv.DictReader(response.text.splitlines())
@@ -85,7 +95,7 @@ class Toggl():
                 timeEntries.append(row)
             self.timeEntries[client["clientName"]] = {
                 "timeEntries": timeEntries,
-                "startDate": settings.startDate,
+                "startDate": startDate,
                 "endDate": settings.endDate,
                 "totalHours": totalHours,
                 "billableHours": billableHours,
